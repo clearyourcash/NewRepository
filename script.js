@@ -1,21 +1,60 @@
 'use strict' 
-let title = prompt ("Как называется ваш проект?");
-let screens = prompt ("Какие типы экранов нужно разработать?");
-let screenPrice = +prompt ("Сколько будет стоить данная работа?");
-let adaptive = confirm ("Нужен ли адаптив на сайте?"); 
-
+let title;
+let screens;
+let adaptive; 
 const rollback = 20; 
 let fullPrice;
 let servicePercentPrice;
-
-let service1 = prompt ("Какой дополнительный тип услуги нужен?");
-let servicePrice1 = +prompt ("Сколько это будет стоить?");
-let service2 = prompt ("Какой дополнительный тип услуги нужен?");
-let servicePrice2 = +prompt ("Сколько это будет стоить?");
 let allServicePrices;
+let service1;
+let service2;
+let servicePrice1;
+let servicePrice2;
+let screenPrice;
 
-const getAllServicePrices = function(servicePrice1,servicePrice2){
-    return servicePrice1 + servicePrice2
+const isANumber = function(num){
+  return !isNaN(parseFloat(num)) && isFinite(num)
+}
+
+const asking = function(){
+  title = prompt ("Как называется ваш проект?")
+  screens = prompt ("Какие типы экранов нужно разработать?")
+
+  do {
+    screenPrice = +prompt("Сколько будет стоить данная работа?");
+    }
+  while (!isANumber(screenPrice) && screenPrice>0)
+  
+/*  Вариант из урока
+  screenPrice = +prompt ("Сколько будет стоить данная работа?") 
+  while (!isANumber(screenPrice)){
+    screenPrice = +prompt ("Сколько будет стоить данная работа?")
+  }
+  */
+
+  adaptive = confirm ("Нужен ли адаптив на сайте?")
+}
+
+const getAllServicePrices = function(){
+  allServicePrices = 0
+  for (let i = 0; i < 2; i++){
+    if (i === 0) {
+      service1 = prompt ("Какой дополнительный тип услуги нужен?"); 
+      servicePrice1 = +prompt ("Сколько это будет стоить?") 
+      while (!isANumber(servicePrice1)) {
+        servicePrice1 = +prompt ("Сколько это будет стоить?")
+      }
+      } else if (i ===1) {
+      service2 = prompt ("Какой дополнительный тип услуги нужен?");
+      servicePrice2 = +prompt ("Сколько это будет стоить?")
+      while (!isANumber(servicePrice2)) {
+        servicePrice2 = +prompt ("Сколько это будет стоить?")
+
+      }
+    }
+     allServicePrices = servicePrice1+servicePrice2
+   }
+return allServicePrices
 }
 
 const getFullPrice = function() {
@@ -49,14 +88,25 @@ const showTypeOf = function(variable){
   console.log(variable, typeof variable)
 }
 
+asking();
 allServicePrices = getAllServicePrices(servicePrice1,servicePrice2)
 fullPrice = getFullPrice()
 title = getTitle();
 servicePercentPrice = getServicePercentPrices()
 
+/*do {
+  screenPrice = parseInt(prompt("Сколько будет стоить данная работа?"));
+  break
+}
+while (screenPrice > 0)
+*/
 showTypeOf(title);
 showTypeOf(screenPrice);
 showTypeOf(adaptive);
+showTypeOf(fullPrice);
+showTypeOf(servicePrice1);
+showTypeOf(servicePrice2);
+showTypeOf(allServicePrices);
 
 console.log(screens); 
 console.log(service1); 
