@@ -1,119 +1,98 @@
-'use strict' 
-let title;
-let screens;
-let adaptive; 
-const rollback = 20; 
-let fullPrice;
-let servicePercentPrice;
-let allServicePrices;
-let service1;
-let service2;
-let servicePrice1;
-let servicePrice2;
-let screenPrice;
+'use strict'
 
-const isANumber = function(num){
-  return !isNaN(parseFloat(num)) && isFinite(num)
-}
-
-const asking = function(){
-  title = prompt ("Как называется ваш проект?")
-  screens = prompt ("Какие типы экранов нужно разработать?")
+const appData ={
+title: '',
+screens: '',
+adaptive: true,
+rollback: 20, 
+fullPrice: 0,
+servicePercentPrice: 0,
+allServicePrices: 0,
+service1: '',
+service2: '',
+servicePrice1: 0,
+servicePrice2: 0,
+screenPrice: 0,
+discountMessage: '',
+asking: function(){
+  appData.title = prompt ("Как называется ваш проект?", "Калькулятор верстки")
+  appData.screens = prompt ("Какие типы экранов нужно разработать?", "Простые и сложные")
 
   do {
-    screenPrice = +prompt("Сколько будет стоить данная работа?");
+    appData.screenPrice = +prompt("Сколько будет стоить данная работа?");
     }
-  while (!isANumber(screenPrice) && screenPrice>0)
+  while (!bigObject.isANumber(appData.screenPrice) && appData.screenPrice>0)
   
-/*  Вариант из урока
-  screenPrice = +prompt ("Сколько будет стоить данная работа?") 
-  while (!isANumber(screenPrice)){
-    screenPrice = +prompt ("Сколько будет стоить данная работа?")
-  }
-  */
-
-  adaptive = confirm ("Нужен ли адаптив на сайте?")
+  appData.adaptive = confirm ("Нужен ли адаптив на сайте?")
+}
 }
 
-const getAllServicePrices = function(){
-  allServicePrices = 0
+const bigObject = {
+isANumber: function(num){
+  return !isNaN(parseFloat(num)) && isFinite(num)
+}, 
+getAllServicePrices: function(){
+  appData.allServicePrices = 0
   for (let i = 0; i < 2; i++){
     if (i === 0) {
-      service1 = prompt ("Какой дополнительный тип услуги нужен?"); 
-      servicePrice1 = +prompt ("Сколько это будет стоить?") 
-      while (!isANumber(servicePrice1)) {
-        servicePrice1 = +prompt ("Сколько это будет стоить?")
+      appData.service1 = prompt ("Какой дополнительный тип услуги нужен?"); 
+      appData.servicePrice1 = +prompt ("Сколько это будет стоить?") 
+      while (!bigObject.isANumber(appData.servicePrice1)) {
+        appData.servicePrice1 = +prompt ("Сколько это будет стоить?")
       }
       } else if (i ===1) {
-      service2 = prompt ("Какой дополнительный тип услуги нужен?");
-      servicePrice2 = +prompt ("Сколько это будет стоить?")
-      while (!isANumber(servicePrice2)) {
-        servicePrice2 = +prompt ("Сколько это будет стоить?")
+      appData.service2 = prompt ("Какой дополнительный тип услуги нужен?");
+      appData.servicePrice2 = +prompt ("Сколько это будет стоить?")
+      while (!bigObject.isANumber(appData.servicePrice2)) {
+        appData.servicePrice2 = +prompt ("Сколько это будет стоить?")
 
       }
     }
-     allServicePrices = servicePrice1+servicePrice2
+     appData.allServicePrices = appData.servicePrice1 + appData.servicePrice2
    }
-return allServicePrices
-}
-
-const getFullPrice = function() {
-  return screenPrice + allServicePrices
-}
-
-const getServicePercentPrices = function(){
- return fullPrice - (fullPrice * (rollback/100))
-}
-
-function getTitle() {
-  return title.trim().substring(0,1).toUpperCase() + title.trim().substring(1).toLowerCase()
-}
-
-const getRollbackMessage = function (price) {
-if (price > 30000) {
+return appData.allServicePrices
+},
+getFullPrice: function() {
+    return appData.screenPrice + appData.allServicePrices;
+}, 
+getServicePercentPrices: function(){
+    return appData.fullPrice - (appData.fullPrice * (appData.rollback/100))
+},
+getTitle: function(){
+  return appData.title.trim().substring(0,1).toUpperCase() + appData.title.trim().substring(1).toLowerCase()
+},
+getRollbackMessage: function(){
+if (appData.fullPrice > 30000) {
  return "Даем скидку в 10%"
 } 
-else if ((price > 15000) && (price <= 30000)) {
+else if ((appData.fullPrice > 15000) && (appData.fullPrice <= 30000)) {
   return "Даем скидку в 5%"
 } 
-else if ((price > 0) && (price <= 15000)) {
+else if ((appData.fullPrice > 0) && (appData.fullPrice <= 15000)) {
   return "Скидка не предусмотрена"
 } 
 else {
  return "Упс, что-то пошло не так!"
 }  
+},
+start: function(){
+  appData.asking()
+  appData.allServicePrices = bigObject.getAllServicePrices(appData.servicePrice1,appData.servicePrice2)
+  appData.fullPrice = bigObject.getFullPrice()
+  appData.title = bigObject.getTitle()
+  appData.servicePercentPrice = bigObject.getServicePercentPrices()
+  appData.discountMessage = bigObject.getRollbackMessage()
+  bigObject.logger();
+},
+logger: function(){
+  console.log(appData.title),
+  console.log(appData.fullPrice),
+  console.log(appData.allServicePrices),
+  console.log(appData.servicePercentPrice),
+  console.log(appData.discountMessage);
+  for (let key in appData){
+  console.log("Ключ:" + key + " " + "Значение: " + appData[key]);
 }
-
-const showTypeOf = function(variable){
-  console.log(variable, typeof variable)
 }
-
-asking();
-allServicePrices = getAllServicePrices(servicePrice1,servicePrice2)
-fullPrice = getFullPrice()
-title = getTitle();
-servicePercentPrice = getServicePercentPrices()
-
-/*do {
-  screenPrice = parseInt(prompt("Сколько будет стоить данная работа?"));
-  break
 }
-while (screenPrice > 0)
-*/
-showTypeOf(title);
-showTypeOf(screenPrice);
-showTypeOf(adaptive);
-showTypeOf(fullPrice);
-showTypeOf(servicePrice1);
-showTypeOf(servicePrice2);
-showTypeOf(allServicePrices);
-
-console.log(screens); 
-console.log(service1); 
-console.log("Стоимость доп. услуги-1 составляет " + servicePrice1 + " рублей");
-console.log(service2); 
-console.log("Стоимость доп. услуги-2 составляет " + servicePrice2 + " рублей");
-console.log("Стоимость всех доп. услуг составляет " + allServicePrices + " рублей");
-console.log("Стоимость всей услуги составляет " + fullPrice + " рублей");
-console.log("Стоимость с учетом вычета - " + servicePercentPrice + " рублей"); 
-console.log(getRollbackMessage(fullPrice));
+bigObject.start();
