@@ -1,65 +1,93 @@
 'use strict'
 
 const appData ={
+regexp: /^(\d*\s?([A-Za-zА-Яа-я]+)\s?(\d*)\s?)*$/gmi,
 title: '',
-screens: '',
+screens: [],
 adaptive: true,
 rollback: 20, 
 fullPrice: 0,
 servicePercentPrice: 0,
 allServicePrices: 0,
-service1: '',
-service2: '',
+services: {},
+name0: '', 
+name1: '',
+price0: 0, 
+price1: 0,
 servicePrice1: 0,
 servicePrice2: 0,
 screenPrice: 0,
 discountMessage: '',
 asking: function(){
-  appData.title = prompt ("Как называется ваш проект?", "Калькулятор верстки")
-  appData.screens = prompt ("Какие типы экранов нужно разработать?", "Простые и сложные")
-
   do {
-    appData.screenPrice = +prompt("Сколько будет стоить данная работа?");
-    }
-  while (!bigObject.isANumber(appData.screenPrice) && appData.screenPrice>0)
-  
-  appData.adaptive = confirm ("Нужен ли адаптив на сайте?")
-}
-}
+    appData.title = prompt ("Как называется ваш проект?")
+  } while (!appData.checkInput(appData.title));
 
-const bigObject = {
+  for (let i = 0; i < 2; i++ ) {
+//    let name = prompt ("Какие типы экранов нужно разработать?")
+  do {
+    name = prompt ("Какие типы экранов нужно разработать?")
+  } while (!appData.checkInput(name));
+    let price = 0
+
+    do {
+    price = prompt("Сколько будет стоить данная работа?");
+   // } while (!appData.isANumber(price) && price > 0);
+   } while (!appData.isANumber(price));
+
+    appData.screens.push({ id: i, name: name, price: price })
+  }
+
+  for (let i = 0; i < 2; i++ ){
+//    let name = prompt ("Какой дополнительный тип услуги нужен?")
+  do {
+    name = prompt ("Какой дополнительный тип услуги нужен?")
+  } while (!appData.checkInput(name));
+    let price = 0; 
+    do {
+      price = prompt ("Сколько это будет стоить?")
+    } while (!appData.isANumber(price))
+
+   appData.services[name] = +price
+
+   if (i === 0){
+    appData.name0 = name
+    appData.price0 = price
+
+   } else if (i === 1) {
+    appData.name1 = name
+    appData.price1 = price
+   }
+
+  }
+
+  appData.adaptive = confirm ("Нужен ли адаптив на сайте?")
+},
+
 isANumber: function(num){
   return !isNaN(parseFloat(num)) && isFinite(num)
 }, 
-getAllServicePrices: function(){
-  appData.allServicePrices = 0
-  for (let i = 0; i < 2; i++){
-    if (i === 0) {
-      appData.service1 = prompt ("Какой дополнительный тип услуги нужен?"); 
-      appData.servicePrice1 = +prompt ("Сколько это будет стоить?") 
-      while (!bigObject.isANumber(appData.servicePrice1)) {
-        appData.servicePrice1 = +prompt ("Сколько это будет стоить?")
-      }
-      } else if (i ===1) {
-      appData.service2 = prompt ("Какой дополнительный тип услуги нужен?");
-      appData.servicePrice2 = +prompt ("Сколько это будет стоить?")
-      while (!bigObject.isANumber(appData.servicePrice2)) {
-        appData.servicePrice2 = +prompt ("Сколько это будет стоить?")
 
-      }
-    }
-     appData.allServicePrices = appData.servicePrice1 + appData.servicePrice2
-   }
-return appData.allServicePrices
+checkInput: function(inputValue){
+return isNaN(inputValue) && inputValue.match(appData.regexp)
+},
+
+addPrices: function(){
+  for (let screen of appData.screens){
+  appData.screenPrice += +screen.price
+  }
+  for (let key in appData.services){
+  appData.allServicePrices += appData.services[key]
+}
 },
 getFullPrice: function() {
-    return appData.screenPrice + appData.allServicePrices;
+    appData.fullPrice = appData.screenPrice + appData.allServicePrices;
 }, 
 getServicePercentPrices: function(){
-    return appData.fullPrice - (appData.fullPrice * (appData.rollback/100))
+    appData.servicePercentPrice = appData.fullPrice - (appData.fullPrice * (appData.rollback/100))
 },
 getTitle: function(){
-  return appData.title.trim().substring(0,1).toUpperCase() + appData.title.trim().substring(1).toLowerCase()
+  appData.title = appData.title.trim().substring(0,1).toUpperCase() + appData.title.trim().substring(1).toLowerCase()
 },
 getRollbackMessage: function(){
 if (appData.fullPrice > 30000) {
@@ -77,22 +105,27 @@ else {
 },
 start: function(){
   appData.asking()
-  appData.allServicePrices = bigObject.getAllServicePrices(appData.servicePrice1,appData.servicePrice2)
-  appData.fullPrice = bigObject.getFullPrice()
-  appData.title = bigObject.getTitle()
-  appData.servicePercentPrice = bigObject.getServicePercentPrices()
-  appData.discountMessage = bigObject.getRollbackMessage()
-  bigObject.logger();
+  appData.addPrices()
+  appData.getFullPrice()
+  appData.getTitle()
+  appData.getServicePercentPrices()
+  appData.getRollbackMessage()
+  appData.logger();
 },
 logger: function(){
   console.log(appData.title),
   console.log(appData.fullPrice),
   console.log(appData.allServicePrices),
   console.log(appData.servicePercentPrice),
-  console.log(appData.discountMessage);
-  for (let key in appData){
+  console.log(appData.getRollbackMessage);
+  console.log(appData.screens)
+  console.log(appData.services)
+
+/*  for (let key in appData){
   console.log("Ключ:" + key + " " + "Значение: " + appData[key]);
 }
+*/
 }
 }
-bigObject.start();
+
+appData.start();
