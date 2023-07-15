@@ -3,28 +3,16 @@
 let titleH1 = document.getElementsByTagName('h1')[0];
 console.log(titleH1);
 
-function getButtons(){
 let buttons = document.getElementsByClassName('handler_btn');
-for (let i = 0; i < buttons.length; i++){
-console.log(buttons[i]);
-}
-}
-getButtons();
+console.log (buttons)
 
 let buttonPlus = document.querySelector('.screen-btn');
 console.log(buttonPlus);
 
-function getOtherItems(){
 let otherItemsPercent = document.querySelectorAll('.percent');
 let otherItemsNumber = document.querySelectorAll('.number');
-for( let i = 0; i < otherItemsPercent.length; i++){
-  console.log(otherItemsPercent[i]);
-}
-for ( let i = 0; i < otherItemsNumber.length; i++){
-console.log(otherItemsNumber[i]);
-}
-}
-getOtherItems();
+console.log(otherItemsPercent);
+console.log(otherItemsNumber);
 
 let inputRange = document.querySelector('.rollback input[type=range]');
 console.log(inputRange);
@@ -32,13 +20,8 @@ console.log(inputRange);
 let spanGetting = document.querySelector('.rollback span'); 
 console.log(spanGetting);
 
-function getAllInputs(){
 let inputs = document.getElementsByClassName('total-input');
-for (let i = 0; i < inputs.length; i++){
-  console.log(inputs[i]);
-}
-}
-getAllInputs();
+console.log(inputs);
 
 let allScreens = document.querySelectorAll('.screen');
 console.log(allScreens);
