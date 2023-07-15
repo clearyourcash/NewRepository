@@ -1,5 +1,48 @@
 'use strict'
 
+let titleH1 = document.getElementsByTagName('h1')[0];
+console.log(titleH1);
+
+function getButtons(){
+let buttons = document.getElementsByClassName('handler_btn');
+for (let i = 0; i < buttons.length; i++){
+console.log(buttons[i]);
+}
+}
+getButtons();
+
+let buttonPlus = document.querySelector('.screen-btn');
+console.log(buttonPlus);
+
+function getOtherItems(){
+let otherItemsPercent = document.querySelectorAll('.percent');
+let otherItemsNumber = document.querySelectorAll('.number');
+for( let i = 0; i < otherItemsPercent.length; i++){
+  console.log(otherItemsPercent[i]);
+}
+for ( let i = 0; i < otherItemsNumber.length; i++){
+console.log(otherItemsNumber[i]);
+}
+}
+getOtherItems();
+
+let inputRange = document.querySelector('.rollback input[type=range]');
+console.log(inputRange);
+
+let spanGetting = document.querySelector('.rollback span'); 
+console.log(spanGetting);
+
+function getAllInputs(){
+let inputs = document.getElementsByClassName('total-input');
+for (let i = 0; i < inputs.length; i++){
+  console.log(inputs[i]);
+}
+}
+getAllInputs();
+
+let allScreens = document.querySelectorAll('.screen');
+console.log(allScreens);
+
 const appData ={
 regexp: /^(\d*\s?([A-Za-zА-Яа-я]+)\s?(\d*)\s?)*$/gmi,
 title: '',
@@ -117,10 +160,10 @@ logger: function(){
   console.log(appData.fullPrice),
   console.log(appData.allServicePrices),
   console.log(appData.servicePercentPrice),
-  console.log(appData.getRollbackMessage);
+ // console.log(appData.getRollbackMessage);
   console.log(appData.screens)
   console.log(appData.services)
-
+  
 /*  for (let key in appData){
   console.log("Ключ:" + key + " " + "Значение: " + appData[key]);
 }
