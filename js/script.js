@@ -21,7 +21,18 @@ let spanGetting = document.querySelector('.rollback span');
 console.log(spanGetting);
 
 let inputs = document.getElementsByClassName('total-input');
-console.log(inputs);
+//console.log(inputs);
+let inputTotal = inputs[0];
+//let inputTotal2 = document.getElementById('#total')
+console.log(inputTotal); 
+let inputTotalCount = inputs[1];
+console.log(inputTotalCount); 
+let inputTotalCountOther = inputs[2];
+console.log(inputTotalCountOther); 
+let inputTotalFullCount = inputs[3];
+console.log(inputTotalFullCount); 
+let inputTotalCountRollback = inputs[4];
+console.log(inputTotalCountRollback); 
 
 let allScreens = document.querySelectorAll('.screen');
 console.log(allScreens);
